@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muhammad Ilham Hakiki — Laravel Developer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    /*
+    ============================================================
+    LARAVEL BLADE STRUCTURE REFERENCE
+    ============================================================
+
+    resources/
+    ├── views/
+    │   ├── layouts/
+    │   │   └── app.blade.php          — Main layout (nav, footer, meta)
+    │   ├── components/
+    │   │   ├── hero.blade.php         — Hero section component
+    │   │   ├── about.blade.php        — About section component
+    │   │   ├── tech-stack.blade.php   — Tech stack grid
+    │   │   ├── projects.blade.php     — Projects grid
+    │   │   ├── experience.blade.php   — Experience timeline
+    │   │   └── contact.blade.php      — Contact section
+    │   └── welcome.blade.php          — Single-page entry: @extends layout
+    │
+    routes/web.php → Route::get('/', fn() => view('welcome'))
+    app/Livewire/ContactForm.php       — Livewire contact component
+    app/Filament/Pages/Portfolio.php   — Filament admin page (CMS for projects)
+    ============================================================
+    */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --bg: #ffffff;
+      --surface: #fafaf9;
+      --surface-2: #f4f4f1;
+      --border: #e8e8e4;
+      --border-soft: #f0f0ec;
+      --text-primary: #111110;
+      --text-secondary: #6b6b65;
+      --text-muted: #9e9e97;
+      --accent: #e8401c;
+      --accent-soft: #fff0ed;
+      --accent-border: #ffc5b3;
+      --green: #16a34a;
+      --green-soft: #f0fdf4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-soft);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .nav-cta {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent) !important;
+      border: 1px solid var(--accent-border);
+      border-radius: 6px;
+      padding: 0.35rem 0.85rem;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent) !important;
+      color: #fff !important;
+    }
+
+    /* Hamburger for mobile */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      padding: 4px;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section { padding: 6rem 0; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    #hero {
+      padding-top: 9rem;
+      padding-bottom: 7rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--green-soft);
+      border: 1px solid #bbf7d0;
+      border-radius: 100px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 4.75rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-title {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-title strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--text-primary);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: #2d2d2b; transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 400;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    /* Hero right — card */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-avatar {
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(135deg, #e8401c, #ff7a5c);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: white;
+      font-style: italic;
+      flex-shrink: 0;
+    }
+
+    .hero-card-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .hero-card-role {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+
+    .hero-stat-num {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .hero-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-stack-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      letter-spacing: 0.02em;
+    }
+
+    .tag-accent {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+
+    /* ─── DIVIDER ─────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border-soft);
+    }
+
+    /* ─── ABOUT ───────────────────────────────────────── */
+    #about { background: var(--surface); }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 1.0625rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .about-text p { margin-bottom: 1.25rem; }
+
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .about-highlight {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .about-highlight-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    .about-highlight-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .about-highlight-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ─── TECH STACK ──────────────────────────────────── */
+    #tech-stack {}
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .stack-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stack-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+
+    .stack-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .stack-card:hover::before { opacity: 1; }
+
+    .stack-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .stack-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .stack-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── PROJECTS ─────────────────────────────────────── */
+    #projects { background: var(--surface); }
+
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      margin-top: 3.5rem;
+    }
+
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 40px rgba(232, 64, 28, 0.06);
+    }
+
+    .project-screenshot {
+      width: 100%;
+      aspect-ratio: 16 / 7.5;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .screenshot-mockup {
+      width: 85%;
+      max-width: 680px;
+    }
+
+    .screenshot-browser {
+      background: var(--bg);
+      border-radius: 12px 12px 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      background: var(--surface-2);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .browser-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .browser-url {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      height: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .browser-url-text {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .browser-content {
+      background: var(--surface);
+      min-height: 140px;
+      padding: 1.5rem;
+    }
+
+    /* ERP browser content */
+    .erp-sidebar {
+      position: absolute;
+      left: 0; top: 36px; bottom: 0;
+      width: 100px;
+      background: #1e1e2d;
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem 0.5rem;
+      gap: 4px;
+    }
+
+    .erp-nav-item {
+      height: 22px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 6px;
+    }
+
+    .erp-nav-item.active { background: rgba(232,64,28,0.4); }
+
+    .erp-nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+
+    .erp-nav-bar { flex: 1; height: 2px; border-radius: 1px; background: rgba(255,255,255,0.15); max-width: 60px; }
+
+    .erp-main {
+      position: absolute;
+      left: 100px; right: 0; top: 36px; bottom: 0;
+      background: #f8f8f6;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow: hidden;
+    }
+
+    .erp-topbar {
+      height: 28px;
+      background: var(--bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .erp-topbar-title { width: 60px; height: 8px; background: var(--border); border-radius: 3px; }
+
+    .erp-topbar-spacer { flex: 1; }
+
+    .erp-topbar-btn { width: 50px; height: 16px; background: var(--accent); border-radius: 4px; opacity: 0.8; }
+
+    .erp-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .erp-stat-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .erp-stat-box .num { font-family: var(--serif); font-size: 1.1rem; color: var(--text-primary); }
+    .erp-stat-box .lbl { width: 40px; height: 5px; background: var(--border); border-radius: 2px; }
+
+    .erp-table {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .erp-table-head {
+      background: var(--surface-2);
+      height: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .erp-th { height: 6px; border-radius: 2px; background: var(--border); }
+
+    .erp-table-rows {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .erp-tr {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .erp-td { height: 5px; border-radius: 2px; background: var(--surface-2); }
+
+    /* Chatbot screenshot */
+    .chat-mockup {
+      background: var(--bg);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .chat-bubble {
+      max-width: 75%;
+      padding: 0.5rem 0.85rem;
+      border-radius: 12px;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .chat-bubble.user {
+      background: var(--accent);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-bubble.bot {
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-suggestions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chat-sugg {
+      font-size: 8px;
+      padding: 3px 8px;
+      border: 1px solid var(--accent-border);
+      border-radius: 100px;
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Inventory screenshot */
+    .inv-mockup {
+      background: var(--bg);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inv-header {
+      background: var(--text-primary);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: 1rem;
+    }
+
+    .inv-logo { width: 50px; height: 8px; background: white; border-radius: 2px; opacity: 0.9; }
+
+    .inv-nav-items { display: flex; gap: 0.75rem; }
+
+    .inv-nav-item { width: 40px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 2px; }
+
+    .inv-nav-item.active { background: rgba(255,255,255,0.8); }
+
+    .inv-body { flex: 1; display: flex; flex-direction: column; padding: 0.75rem; gap: 0.5rem; overflow: hidden; }
+
+    .inv-filters {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .inv-filter { height: 24px; background: var(--surface-2); border-radius: 6px; border: 1px solid var(--border); }
+
+    .inv-product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .inv-product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .inv-img { width: 100%; aspect-ratio: 1; background: var(--surface-2); border-radius: 5px; border: 1px solid var(--border); }
+    .inv-name { height: 6px; background: var(--border); border-radius: 2px; }
+    .inv-price { height: 5px; width: 60%; background: var(--accent); border-radius: 2px; opacity: 0.6; }
+
+    .project-body {
+      padding: 2.25rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .project-num {
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-style: italic;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .project-feature {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .feature-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .project-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .project-meta-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .project-tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tech-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.3rem 0.65rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-secondary);
+    }
+
+    /* ─── EXPERIENCE ───────────────────────────────────── */
+    #experience {}
+
+    .experience-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 3.5rem;
+    }
+
+    .experience-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .exp-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .exp-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--text-primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .exp-logo svg { color: white; }
+
+    .exp-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .exp-company {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .exp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+      border: 1px solid var(--accent-border);
+      margin-bottom: 1rem;
+    }
+
+    .exp-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .exp-tasks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .exp-task {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+    }
+
+    .task-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      border: 1px solid #bbf7d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--green);
+    }
+
+    /* ─── CONTACT ──────────────────────────────────────── */
+    #contact { background: var(--surface); }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .contact-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .contact-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+
+    .contact-link-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-link-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .contact-link-text span {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .contact-link-arrow { margin-left: auto; color: var(--text-muted); }
+
+    /* Contact right card */
+    .contact-cta-card {
+      background: var(--text-primary);
+      border-radius: 20px;
+      padding: 2.5rem;
+      color: white;
+    }
+
+    .contact-cta-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1rem;
+    }
+
+    .contact-cta-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+
+    .contact-cta-title em { font-style: italic; color: #ff8a6f; }
+
+    .contact-cta-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .contact-cta-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-cta-available {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .contact-cta-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────── */
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-body { grid-template-columns: 1fr; }
+      .project-meta { display: none; }
+      .experience-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .footer-inner { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 1.25rem; }
+      section { padding: 4rem 0; }
+      .stack-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── MOBILE NAV OPEN ─────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.25rem 0;
+    }
+
+    .mobile-nav a:hover { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  resources/views/layouts/app.blade.php            ║
+       ║  @stack('styles')                                  ║
+       ╚══════════════════════════════════════════════════╝ -->
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-nav />                        ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <nav>
+    <a href="#hero" class="nav-logo">Ilham<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#tech-stack">Tech Stack</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about" onclick="closeMobileNav()">About</a>
+    <a href="#tech-stack" onclick="closeMobileNav()">Tech Stack</a>
+    <a href="#projects" onclick="closeMobileNav()">Projects</a>
+    <a href="#experience" onclick="closeMobileNav()">Experience</a>
+    <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-hero />                       ║
+       ║  resources/views/components/hero.blade.php         ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- Left -->
+        <div>
+          <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            Available for opportunities
+          </div>
+
+          <h1 class="hero-name">
+            Muhammad<br>
+            Ilham <em>Hakiki</em>
+          </h1>
+
+          <p class="hero-title">
+            <strong>Laravel Developer</strong> &nbsp;·&nbsp; Frontend Developer
+          </p>
+
+          <p class="hero-desc">
+            Computer Science student with experience developing ERP systems and web applications
+            using the Laravel ecosystem. Passionate about building efficient, user-friendly,
+            and scalable business applications.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn-primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              View Projects
+            </a>
+            <a href="#contact" class="btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Get in touch
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Card -->
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-avatar">IH</div>
+            <div>
+              <div class="hero-card-name">Muhammad Ilham Hakiki</div>
+              <div class="hero-card-role">Laravel &amp; Frontend Developer</div>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-num">3+</div>
+              <div class="hero-stat-label">Projects Built</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">1+</div>
+              <div class="hero-stat-label">Years Experience</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">6</div>
+              <div class="hero-stat-label">Core Technologies</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">CS</div>
+              <div class="hero-stat-label">Degree (Active)</div>
+            </div>
+          </div>
+
+          <div class="hero-stack-tags">
+            <span class="tag tag-accent">Laravel</span>
+            <span class="tag tag-accent">Livewire</span>
+            <span class="tag tag-accent">Filament</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">PHP</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-about />                      ║
+       ║  resources/views/components/about.blade.php        ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="about">
+    <div class="container">
+      <div class="about-inner">
+
+        <div>
+          <p class="section-label">About me</p>
+          <h2 class="section-title">Building real solutions,<br>one commit at a time.</h2>
+          <div class="about-text">
+            <p>
+              I am a Computer Science student with hands-on experience building web applications
+              using Laravel, Livewire, Filament, MySQL, and Tailwind CSS.
+            </p>
+            <p>
+              Currently developing an ERP system for a real company while continuously improving
+              my skills in software engineering, system analysis, and modern web development.
+              I believe great software is built by understanding both the technical and business
+              sides of a problem.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-highlights">
+          <div class="about-highlight">
+            <div class="about-highlight-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div>
+              <div class="about-highlight-title">Full-Stack Laravel Development</div>
+              <div class="about-highlight-desc">Building scalable backend systems and reactive frontends using the Laravel ecosystem.</div>
+            </div>
+          </div>
+          <div class="about-highlight">
+            <div class="about-highlight-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div>
+              <div class="about-highlight-title">ERP &amp; Business Systems</div>
+              <div class="about-highlight-desc">Real-world experience building ERP systems that automate and optimize business workflows.</div>
+            </div>
+          </div>
+          <div class="about-highlight">
+            <div class="about-highlight-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+            </div>
+            <div>
+              <div class="about-highlight-title">UX-Focused Interfaces</div>
+              <div class="about-highlight-desc">Designing clean, user-friendly dashboards and admin panels with Filament &amp; Tailwind CSS.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-tech-stack />                 ║
+       ║  resources/views/components/tech-stack.blade.php   ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="tech-stack">
+    <div class="container">
+      <p class="section-label">Tech stack</p>
+      <h2 class="section-title">Tools I build with</h2>
+      <p class="section-subtitle">The technologies I use to build reliable, maintainable, and modern web applications.</p>
+
+      <div class="stack-grid">
+
+        <!-- Laravel -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#fff5f2; border:1px solid #ffd0c3;">
+            <svg width="26" height="26" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M49.6 10.5C49.6 10.5 49.6 10.4 49.6 10.3C49.5 10.1 49.4 10 49.3 9.9C49.2 9.8 49.2 9.8 49.1 9.8L38.4 3.5C38.1 3.3 37.7 3.3 37.4 3.5L27.6 9.3V0.8C27.6 0.4 27.2 0 26.8 0H15.5C15.1 0 14.7 0.4 14.7 0.8V7L4.6 1.1C4.3 0.9 3.9 0.9 3.6 1.1L0.5 2.9C0.2 3.1 0 3.4 0 3.8V14.6C0 15 0.2 15.4 0.5 15.6L11.4 22L0.5 28.4C0.2 28.6 0 29 0 29.4V40.2C0 40.6 0.2 41 0.5 41.2L11.2 47.5C11.5 47.7 11.7 47.7 12 47.7C12.3 47.7 12.5 47.7 12.8 47.5L23.5 41.2C23.8 41 24 40.6 24 40.2V34.4L33.8 40.2C34.1 40.4 34.5 40.4 34.8 40.2L45.5 33.9C45.8 33.7 46 33.3 46 32.9V22.2C46 21.8 45.8 21.4 45.5 21.2L35.6 15.4L45.4 9.6C45.7 9.4 45.9 9 45.9 8.6V2.4C46 2 45.8 1.7 45.5 1.5L36 6.9L27.6 1.9V1.1H26V9.7L16.2 15.5C15.9 15.7 15.7 16.1 15.7 16.5V29.1L6 23.3L6.1 14.9L11.7 11.5L16.9 14.7V13.1L12.6 10.5L6 14.5V3.5L11.8 0.2V13.9L24 21.4V33.8L12.5 40.4V26.6L23.4 20.2V16.5L11.8 23L0.8 16.3V4.9L3 3.6L11.6 8.9V20.5L22.4 14L22.4 7.6L15.7 3.6V1.9H24.9V10.2L35.8 3.6L40.2 6.2L27.6 13.4V27.2L34 30.8L33.9 22.3L38.5 4.6L47.8 10V15.9L27.6 28.1V26.7L44.3 16.9V16L34.9 10.5L24 16.9V32.9L34.1 38.7L44.8 32.4V23.6L48 21.7V32L37.4 38.4L27.6 32.7V14.5L37.7 8.8L46.1 13.8V6.7L38 2.2L27.6 8V13.5L37.5 7.8L38.4 8.3L29.3 13.7V28.5L38 33.4L44.4 29.6V32.4L37.9 36.2L29 31.2V15.7L38 10.1L46.8 15.3V10.3L38.4 5.7L27.6 11.7Z" fill="#e8401c"/>
+            </svg>
+          </div>
+          <div class="stack-name">Laravel</div>
+          <div class="stack-desc">PHP framework used to build secure, scalable, and maintainable web applications with elegant syntax.</div>
+        </div>
+
+        <!-- Livewire -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#f0f4ff; border:1px solid #c7d5f8;">
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4C11.2 4 4 11.2 4 20s7.2 16 16 16 16-7.2 16-16S28.8 4 20 4zm0 28c-6.6 0-12-5.4-12-12S13.4 8 20 8s12 5.4 12 12-5.4 12-12 12z" fill="#4f6ef7"/>
+              <path d="M26 15l-8 10-4-5" stroke="#4f6ef7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="stack-name">Livewire</div>
+          <div class="stack-desc">Build dynamic and reactive interfaces directly in Laravel without writing complex JavaScript.</div>
+        </div>
+
+        <!-- Filament -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#fff9ed; border:1px solid #fde8a3;">
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+              <rect width="40" height="40" rx="8" fill="#f59e0b" opacity="0.15"/>
+              <path d="M12 28l8-16 8 16" stroke="#d97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 22h10" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="stack-name">Filament</div>
+          <div class="stack-desc">Admin panel framework for rapid development of dashboards, CRUD systems, and business applications.</div>
+        </div>
+
+        <!-- MySQL -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#f0f8ff; border:1px solid #b3d9f5;">
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+              <ellipse cx="20" cy="12" rx="13" ry="5" stroke="#0277BD" stroke-width="2"/>
+              <path d="M7 12v8c0 2.8 5.8 5 13 5s13-2.2 13-5v-8" stroke="#0277BD" stroke-width="2"/>
+              <path d="M7 20v8c0 2.8 5.8 5 13 5s13-2.2 13-5v-8" stroke="#0277BD" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="stack-name">MySQL</div>
+          <div class="stack-desc">Relational database management system for storing and managing application data reliably.</div>
+        </div>
+
+        <!-- Tailwind CSS -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#f0fbff; border:1px solid #b3e8f8;">
+            <svg width="26" height="20" viewBox="0 0 54 33" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M27 0C19.8 0 15.3 3.6 13.5 10.8 16.2 7.2 19.35 5.85 22.95 6.75 25.004 7.263 26.472 8.754 28.097 10.403 30.744 13.09 33.808 16.2 40.5 16.2 47.7 16.2 52.2 12.6 54 5.4 51.3 9 48.15 10.35 44.55 9.45 42.496 8.937 41.028 7.446 39.403 5.797 36.756 3.11 33.692 0 27 0ZM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C17.344 29.29 20.408 32.4 27.1 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.356 19.31 20.292 16.2 13.5 16.2Z" fill="#06B6D4"/>
+            </svg>
+          </div>
+          <div class="stack-name">Tailwind CSS</div>
+          <div class="stack-desc">Utility-first CSS framework for creating responsive and modern user interfaces without leaving HTML.</div>
+        </div>
+
+        <!-- Git & GitHub -->
+        <div class="stack-card">
+          <div class="stack-logo" style="background:#f6f6f8; border:1px solid #d0d0d8;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="color:#111">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </div>
+          <div class="stack-name">Git &amp; GitHub</div>
+          <div class="stack-desc">Version control and collaboration tools for managing source code and tracking project history.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-projects />                   ║
+       ║  resources/views/components/projects.blade.php     ║
+       ║  Data source: App\Models\Project (Filament CMS)    ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-label">Projects</p>
+      <h2 class="section-title">Featured work</h2>
+      <p class="section-subtitle">A selection of applications I've built — from enterprise ERP systems to AI-powered chatbots.</p>
+
+      <div class="projects-list">
+
+        <!-- ── PROJECT 1 ── ERP System ──────────────────── -->
+        <div class="project-card">
+          <!-- Screenshot placeholder: ERP Management System -->
+          <div class="project-screenshot">
+            <!-- Simulated ERP admin panel UI -->
+            <div class="screenshot-mockup">
+              <div class="screenshot-browser">
+                <div class="browser-bar">
+                  <div class="browser-dot" style="background:#ff5f57;"></div>
+                  <div class="browser-dot" style="background:#ffbd2e;"></div>
+                  <div class="browser-dot" style="background:#28c840;"></div>
+                  <div class="browser-url">
+                    <span class="browser-url-text">erp.auliart.co.id/dashboard</span>
+                  </div>
+                </div>
+                <div class="browser-content" style="padding:0; position:relative; min-height:200px;">
+                  <!-- Sidebar -->
+                  <div class="erp-sidebar">
+                    <div class="erp-nav-item">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar"></div>
+                    </div>
+                    <div class="erp-nav-item active">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar" style="background:rgba(255,255,255,0.6)"></div>
+                    </div>
+                    <div class="erp-nav-item">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar"></div>
+                    </div>
+                    <div class="erp-nav-item">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar"></div>
+                    </div>
+                    <div class="erp-nav-item">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar"></div>
+                    </div>
+                    <div class="erp-nav-item">
+                      <div class="erp-nav-dot"></div><div class="erp-nav-bar" style="max-width:40px"></div>
+                    </div>
+                  </div>
+                  <!-- Main area -->
+                  <div class="erp-main">
+                    <div class="erp-topbar">
+                      <div class="erp-topbar-title"></div>
+                      <div class="erp-topbar-spacer"></div>
+                      <div class="erp-topbar-btn"></div>
+                    </div>
+                    <div class="erp-stats">
+                      <div class="erp-stat-box">
+                        <div class="num" style="font-size:0.95rem; font-family:var(--serif)">284</div>
+                        <div class="lbl"></div>
+                      </div>
+                      <div class="erp-stat-box">
+                        <div class="num" style="font-size:0.95rem; font-family:var(--serif)">$12k</div>
+                        <div class="lbl"></div>
+                      </div>
+                      <div class="erp-stat-box">
+                        <div class="num" style="font-size:0.95rem; font-family:var(--serif)">48</div>
+                        <div class="lbl"></div>
+                      </div>
+                      <div class="erp-stat-box">
+                        <div class="num" style="font-size:0.95rem; font-family:var(--serif)">7</div>
+                        <div class="lbl"></div>
+                      </div>
+                    </div>
+                    <div class="erp-table">
+                      <div class="erp-table-head">
+                        <div class="erp-th" style="width:15px"></div>
+                        <div class="erp-th" style="width:60px"></div>
+                        <div class="erp-th" style="width:40px; margin-left:auto"></div>
+                        <div class="erp-th" style="width:30px"></div>
+                      </div>
+                      <div class="erp-table-rows">
+                        <div class="erp-tr"><div class="erp-td" style="width:12px"></div><div class="erp-td" style="width:80px"></div><div class="erp-td" style="width:40px; margin-left:auto"></div><div class="erp-td" style="width:30px; background:#bbf7d0"></div></div>
+                        <div class="erp-tr"><div class="erp-td" style="width:12px"></div><div class="erp-td" style="width:65px"></div><div class="erp-td" style="width:40px; margin-left:auto"></div><div class="erp-td" style="width:30px; background:#fde8a3"></div></div>
+                        <div class="erp-tr"><div class="erp-td" style="width:12px"></div><div class="erp-td" style="width:90px"></div><div class="erp-td" style="width:40px; margin-left:auto"></div><div class="erp-td" style="width:30px; background:#ffd0c3"></div></div>
+                        <div class="erp-tr"><div class="erp-td" style="width:12px"></div><div class="erp-td" style="width:70px"></div><div class="erp-td" style="width:40px; margin-left:auto"></div><div class="erp-td" style="width:30px; background:#bbf7d0"></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-body">
+            <div>
+              <div class="project-num">Project 01</div>
+              <h3 class="project-title">ERP Management System</h3>
+              <p class="project-desc">
+                Enterprise Resource Planning system developed for company operational management.
+                A comprehensive suite covering the full business workflow from customer acquisition
+                to inventory and reporting.
+              </p>
+              <ul class="project-features">
+                <li class="project-feature"><div class="feature-dot"></div> Authentication &amp; Authorization</li>
+                <li class="project-feature"><div class="feature-dot"></div> Role Management</li>
+                <li class="project-feature"><div class="feature-dot"></div> Customer Management</li>
+                <li class="project-feature"><div class="feature-dot"></div> Transaction Management</li>
+                <li class="project-feature"><div class="feature-dot"></div> Inventory Management</li>
+                <li class="project-feature"><div class="feature-dot"></div> Reporting Dashboard</li>
+              </ul>
+            </div>
+
+            <div class="project-meta">
+              <div>
+                <div class="project-meta-label">Tech Stack</div>
+                <div class="project-tech-tags">
+                  <span class="tech-tag" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent-border)">Laravel</span>
+                  <span class="tech-tag" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent-border)">Livewire</span>
+                  <span class="tech-tag" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent-border)">Filament</span>
+                  <span class="tech-tag">MySQL</span>
+                  <span class="tech-tag">Tailwind CSS</span>
+                </div>
+              </div>
+              <div>
+                <div class="project-meta-label">Type</div>
+                <span class="tech-tag">Enterprise ERP</span>
+              </div>
+              <div>
+                <div class="project-meta-label">Status</div>
+                <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:500; color:var(--green);">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--green); display:inline-block;"></span>
+                  In Development
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PROJECT 2 ── FAQ Chatbot ────────────────── -->
+        <div class="project-card">
+          <div class="project-screenshot">
+            <!-- Simulated Chatbot UI -->
+            <div class="screenshot-mockup">
+              <div class="screenshot-browser">
+                <div class="browser-bar">
+                  <div class="browser-dot" style="background:#ff5f57;"></div>
+                  <div class="browser-dot" style="background:#ffbd2e;"></div>
+                  <div class="browser-dot" style="background:#28c840;"></div>
+                  <div class="browser-url">
+                    <span class="browser-url-text">faq-chatbot.app/chat</span>
+                  </div>
+                </div>
+                <div class="browser-content" style="padding:0.75rem; display:flex; flex-direction:column; gap:0.65rem; min-height:180px;">
+                  <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#4f6ef7,#9f7aea); display:flex; align-items:center; justify-content:center;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                    </div>
+                    <div>
+                      <div style="font-size:10px; font-weight:600; color:var(--text-primary)">FAQ Assistant</div>
+                      <div style="font-size:8px; color:var(--green); display:flex; align-items:center; gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;"></span>Online</div>
+                    </div>
+                  </div>
+                  <div class="chat-bubble bot">Hello! How can I help you today? Ask me anything.</div>
+                  <div class="chat-bubble user">How do I reset my password?</div>
+                  <div class="chat-bubble bot">
+                    <strong>Password Reset Instructions:</strong><br>
+                    Go to Settings → Security → Reset Password. Check your email for the link.
+                  </div>
+                  <div class="chat-suggestions">
+                    <div class="chat-sugg">Account settings</div>
+                    <div class="chat-sugg">Billing info</div>
+                    <div class="chat-sugg">Contact support</div>
+                  </div>
+                  <div style="display:flex; gap:0.5rem; align-items:center; margin-top:auto;">
+                    <div style="flex:1; height:28px; background:var(--surface-2); border-radius:6px; border:1px solid var(--border);"></div>
+                    <div style="width:28px;height:28px; background:var(--accent); border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-body">
+            <div>
+              <div class="project-num">Project 02</div>
+              <h3 class="project-title">FAQ Chatbot System</h3>
+              <p class="project-desc">
+                Intelligent FAQ chatbot using a Hybrid NLU approach combining Sentence Transformer
+                MiniLM embeddings and Levenshtein Distance for accurate question matching and semantic
+                understanding of user queries.
+              </p>
+              <ul class="project-features">
+                <li class="project-feature"><div class="feature-dot"></div> Semantic Search with MiniLM Embeddings</li>
+                <li class="project-feature"><div class="feature-dot"></div> FAQ Recommendation Engine</li>
+                <li class="project-feature"><div class="feature-dot"></div> Question Matching &amp; Fuzzy Lookup</li>
+                <li class="project-feature"><div class="feature-dot"></div> Hybrid NLU Architecture</li>
+              </ul>
+            </div>
+
+            <div class="project-meta">
+              <div>
+                <div class="project-meta-label">Tech Stack</div>
+                <div class="project-tech-tags">
+                  <span class="tech-tag">Python</span>
+                  <span class="tech-tag">NLP</span>
+                  <span class="tech-tag">Machine Learning</span>
+                  <span class="tech-tag">Sentence Transformers</span>
+                </div>
+              </div>
+              <div>
+                <div class="project-meta-label">Type</div>
+                <span class="tech-tag">AI / ML</span>
+              </div>
+              <div>
+                <div class="project-meta-label">Status</div>
+                <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:500; color:var(--text-secondary);">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted); display:inline-block;"></span>
+                  Completed
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PROJECT 3 ── Inventory System ─────────── -->
+        <div class="project-card">
+          <div class="project-screenshot">
+            <!-- Simulated Inventory UI -->
+            <div class="screenshot-mockup">
+              <div class="screenshot-browser">
+                <div class="browser-bar">
+                  <div class="browser-dot" style="background:#ff5f57;"></div>
+                  <div class="browser-dot" style="background:#ffbd2e;"></div>
+                  <div class="browser-dot" style="background:#28c840;"></div>
+                  <div class="browser-url">
+                    <span class="browser-url-text">inventory.app/products</span>
+                  </div>
+                </div>
+                <div class="browser-content" style="padding:0;">
+                  <div class="inv-mockup" style="min-height:180px;">
+                    <div class="inv-header">
+                      <div class="inv-logo"></div>
+                      <div class="inv-nav-items">
+                        <div class="inv-nav-item active"></div>
+                        <div class="inv-nav-item"></div>
+                        <div class="inv-nav-item"></div>
+                        <div class="inv-nav-item"></div>
+                      </div>
+                    </div>
+                    <div class="inv-body">
+                      <div class="inv-filters">
+                        <div class="inv-filter" style="width:80px;"></div>
+                        <div class="inv-filter" style="width:60px;"></div>
+                        <div style="margin-left:auto;"></div>
+                        <div class="inv-filter" style="width:70px; background:var(--accent); border-color:var(--accent); opacity:0.85;"></div>
+                      </div>
+                      <div class="inv-product-grid">
+                        <div class="inv-product-card"><div class="inv-img"></div><div class="inv-name"></div><div class="inv-price"></div></div>
+                        <div class="inv-product-card"><div class="inv-img" style="background:var(--border);"></div><div class="inv-name" style="width:70%;"></div><div class="inv-price"></div></div>
+                        <div class="inv-product-card"><div class="inv-img"></div><div class="inv-name" style="width:80%;"></div><div class="inv-price"></div></div>
+                        <div class="inv-product-card"><div class="inv-img" style="background:var(--border);"></div><div class="inv-name"></div><div class="inv-price"></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-body">
+            <div>
+              <div class="project-num">Project 03</div>
+              <h3 class="project-title">Inventory Management System</h3>
+              <p class="project-desc">
+                Web application for inventory and stock management built with the Laravel
+                ecosystem. Provides real-time stock visibility and comprehensive reporting
+                for business operations.
+              </p>
+              <ul class="project-features">
+                <li class="project-feature"><div class="feature-dot"></div> Product Management &amp; Cataloguing</li>
+                <li class="project-feature"><div class="feature-dot"></div> Stock Tracking &amp; Alerts</li>
+                <li class="project-feature"><div class="feature-dot"></div> Comprehensive Reporting</li>
+              </ul>
+            </div>
+
+            <div class="project-meta">
+              <div>
+                <div class="project-meta-label">Tech Stack</div>
+                <div class="project-tech-tags">
+                  <span class="tech-tag" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent-border)">Laravel</span>
+                  <span class="tech-tag" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent-border)">Livewire</span>
+                  <span class="tech-tag">MySQL</span>
+                </div>
+              </div>
+              <div>
+                <div class="project-meta-label">Type</div>
+                <span class="tech-tag">Business Web App</span>
+              </div>
+              <div>
+                <div class="project-meta-label">Status</div>
+                <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:500; color:var(--text-secondary);">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--text-muted); display:inline-block;"></span>
+                  Completed
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-experience />                 ║
+       ║  resources/views/components/experience.blade.php   ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="experience">
+    <div class="container">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">Where I've worked</h2>
+
+      <div class="experience-inner">
+        <div>
+          <div class="experience-card">
+            <div class="exp-header">
+              <div class="exp-logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                  <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <div>
+                <div class="exp-title">IT Support</div>
+                <div class="exp-company">Auliart</div>
+              </div>
+            </div>
+
+            <div class="exp-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Current Position
+            </div>
+
+            <p class="exp-desc">
+              Developing ERP systems, maintaining company technology operations, and
+              implementing business process automation using modern web technologies.
+            </p>
+
+            <ul class="exp-tasks">
+              <li class="exp-task">
+                <div class="task-check">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                ERP system design and development
+              </li>
+              <li class="exp-task">
+                <div class="task-check">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                Company technology maintenance
+              </li>
+              <li class="exp-task">
+                <div class="task-check">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                Business process automation &amp; optimization
+              </li>
+              <li class="exp-task">
+                <div class="task-check">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                Technical support for internal teams
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Education / Side card -->
+        <div style="display:flex; flex-direction:column; gap:1.25rem;">
+          <div class="experience-card">
+            <div class="exp-header">
+              <div class="exp-logo" style="background:#4f6ef7;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+              </div>
+              <div>
+                <div class="exp-title">Computer Science</div>
+                <div class="exp-company">University Student</div>
+              </div>
+            </div>
+            <p class="exp-desc" style="margin-bottom:0;">
+              Studying software engineering, data structures, algorithms, and system design.
+              Applying academic knowledge to real-world projects.
+            </p>
+          </div>
+
+          <!-- Skills breakdown -->
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+            <div style="font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.25rem;">Core competencies</div>
+            <div style="display:flex; flex-direction:column; gap:0.9rem;">
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                  <span style="font-size:0.8rem; color:var(--text-secondary);">Laravel / PHP</span>
+                  <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Advanced</span>
+                </div>
+                <div style="height:4px; background:var(--surface-2); border-radius:2px; overflow:hidden;">
+                  <div style="height:100%; width:88%; background:var(--accent); border-radius:2px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                  <span style="font-size:0.8rem; color:var(--text-secondary);">Livewire &amp; Filament</span>
+                  <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Proficient</span>
+                </div>
+                <div style="height:4px; background:var(--surface-2); border-radius:2px; overflow:hidden;">
+                  <div style="height:100%; width:80%; background:var(--accent); border-radius:2px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                  <span style="font-size:0.8rem; color:var(--text-secondary);">MySQL &amp; Database Design</span>
+                  <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Proficient</span>
+                </div>
+                <div style="height:4px; background:var(--surface-2); border-radius:2px; overflow:hidden;">
+                  <div style="height:100%; width:75%; background:var(--accent); border-radius:2px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+                  <span style="font-size:0.8rem; color:var(--text-secondary);">Tailwind CSS / Frontend</span>
+                  <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Advanced</span>
+                </div>
+                <div style="height:4px; background:var(--surface-2); border-radius:2px; overflow:hidden;">
+                  <div style="height:100%; width:85%; background:var(--accent); border-radius:2px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Blade Component: <x-contact />                    ║
+       ║  resources/views/components/contact.blade.php      ║
+       ║  Livewire: App\Livewire\ContactForm                 ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-inner">
+
+        <div>
+          <p class="section-label">Get in touch</p>
+          <h2 class="contact-title">Let's build<br>something together.</h2>
+          <p class="contact-desc">
+            I'm open to internship opportunities, freelance projects, and collaborations.
+            Whether you have a project in mind or just want to connect — my inbox is open.
+          </p>
+
+          <div class="contact-links">
+            <a href="mailto:ilhamhakiki@example.com" class="contact-link">
+              <div class="contact-link-icon" style="background:var(--accent-soft); color:var(--accent);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div class="contact-link-text">
+                <strong>Email</strong>
+                <span>ilhamhakiki@example.com</span>
+              </div>
+              <div class="contact-link-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+            </a>
+
+            <a href="https://github.com/ilhamhakiki" target="_blank" class="contact-link">
+              <div class="contact-link-icon" style="background:var(--surface-2); color:var(--text-primary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+              </div>
+              <div class="contact-link-text">
+                <strong>GitHub</strong>
+                <span>github.com/ilhamhakiki</span>
+              </div>
+              <div class="contact-link-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- CTA card right -->
+        <div class="contact-cta-card">
+          <div class="contact-cta-label">Open to work</div>
+          <h3 class="contact-cta-title">Looking for a dedicated <em>Laravel developer?</em></h3>
+          <p class="contact-cta-desc">
+            I bring hands-on experience building ERP systems and web applications.
+            Ready to contribute to your team and grow together.
+          </p>
+          <div class="contact-cta-divider"></div>
+          <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.75rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.8rem; color:rgba(255,255,255,0.7);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Laravel, Livewire, Filament — in production
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.8rem; color:rgba(255,255,255,0.7);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Real ERP development experience
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem; font-size:0.8rem; color:rgba(255,255,255,0.7);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Quick learner, strong work ethic
+            </div>
+          </div>
+          <div class="contact-cta-available">
+            <div class="contact-cta-dot"></div>
+            Currently available for opportunities
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  Footer — part of layouts/app.blade.php            ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-name">Muhammad Ilham Hakiki</span>
+        <span class="footer-copy">© 2025 · Built with Laravel, Livewire &amp; Tailwind CSS</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav toggle for mobile
+    const navToggle = document.getElementById('navToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    navToggle.addEventListener('click', () => {
+      mobileNav.classList.toggle('open');
+    });
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+    }
+
+    // Close mobile nav on outside click
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !mobileNav.contains(e.target)) {
+        mobileNav.classList.remove('open');
+      }
+    });
+
+    // Active nav highlight on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = '';
+            link.style.fontWeight = '';
+          });
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active && !active.classList.contains('nav-cta')) {
+            active.style.color = 'var(--text-primary)';
+            active.style.fontWeight = '500';
+          }
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>
